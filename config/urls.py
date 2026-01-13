@@ -6,7 +6,6 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.conf.urls.i18n import i18n_patterns
 
 from drf_spectacular.views import (
     SpectacularAPIView,
@@ -14,17 +13,18 @@ from drf_spectacular.views import (
     SpectacularRedocView,
 )
 
-urlpatterns = i18n_patterns(
+urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('uploads.urls')),
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path("api/v1/contacts/", include("contacts.urls")),
+]
 
 # === Swagger / OpenAPI ===
 swagger_urlpatterns = [
-    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-    path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    path('api/v1/schema', SpectacularAPIView.as_view(), name='schema'),
+    path('api/v1/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/v1/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]
+
 
 urlpatterns += swagger_urlpatterns
 
