@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from rest_framework import viewsets, generics
+from .models import *
+from .serializers import *
 
-# Create your views here.
+
+class UploadsViewSet(viewsets.ModelViewSet):
+    queryset = Uploads.objects.all()
+    serializer_class = UploadsSerializer
