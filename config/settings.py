@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'contacts',
     'users',
     'uploads',
+    'drf_yasg',
 ]
 
 
