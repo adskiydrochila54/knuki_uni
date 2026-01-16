@@ -12,13 +12,13 @@ class ContactMessageTests(APITestCase):
     def test_create_contact_message(self):
         payload = {
             "name": "Test User",
-            "email": "test@example.com",
-            "topic": "Test topic",
+            "faculty": "Инженерный факультет",
+            "phone": "+996 312 57 03 79",
             "message": "This is a test contact message",
         }
 
         response = self.client.post(
-            "/api/v1/contacts/create/",
+            "/api/v1/contacts/messages/",
             payload,
             format="json",
         )
@@ -26,15 +26,48 @@ class ContactMessageTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(ContactMessage.objects.count(), 1)
 
-    def test_create_contact_message_invalid(self):
+    def test_create_contact_message_invalid_name(self):
         payload = {
             "name": "A",
-            "email": "test@example.com",
+            "faculty": "Инженерный факультет",
+            "phone": "+996 312 57 03 79",
+            "message": "Test message content",
+        }
+
+        response = self.client.post(
+            "/api/v1/contacts/messages/",
+            payload,
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_contact_message_invalid_phone(self):
+        payload = {
+            "name": "Test User",
+            "faculty": "Инженерный факультет",
+            "phone": "123456",
+            "message": "Test message content",
+        }
+
+        response = self.client.post(
+            "/api/v1/contacts/messages/",
+            payload,
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_contact_message_short_message(self):
+        payload = {
+            "name": "Test User",
+            "faculty": "Инженерный факультет",
+            "phone": "+996 312 57 03 79",
             "message": "short",
         }
 
         response = self.client.post(
-            "/api/v1/contacts/create/",
+            "/api/v1/contacts/messages/",
             payload,
             format="json",
         )
@@ -51,11 +84,12 @@ class ContactMessageTests(APITestCase):
 
         ContactMessage.objects.create(
             name="User",
-            email="u@test.com",
+            faculty="Инженерный факультет",
+            phone="+996 312 57 03 79",
             message="Test message content",
         )
 
-        response = self.client.get("/api/v1/contacts/list/")
+        response = self.client.get("/api/v1/contacts/admin/messages/")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data["results"]), 1)
@@ -67,7 +101,7 @@ class ContactMessageTests(APITestCase):
         )
         self.client.force_authenticate(user)
 
-        response = self.client.get("/api/v1/contacts/list/")
+        response = self.client.get("/api/v1/contacts/admin/messages/")
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
@@ -81,12 +115,13 @@ class ContactMessageTests(APITestCase):
 
         message = ContactMessage.objects.create(
             name="User",
-            email="u@test.com",
+            faculty="Инженерный факультет",
+            phone="+996 312 57 03 79",
             message="Test message content",
         )
 
         response = self.client.patch(
-            f"/api/v1/contacts/{message.id}/read/",
+            f"/api/v1/contacts/admin/messages/{message.id}/read/",
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
