@@ -10,11 +10,11 @@ class Uploads(models.Model):
     FILE_TYPES = (
         ('image', 'Image'),
         ('video', 'Video'),
-        ('pdf', 'PDF'),
+        ('pdf', 'PDF'),  # document,
         ('other', 'Other'),
     )
     file_type = models.CharField(max_length=16, choices=FILE_TYPES, default='other')
-    file = models.FileField(upload_to='uploads/')
+    file = models.FileField(upload_to='uploads/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
