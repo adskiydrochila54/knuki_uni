@@ -8,7 +8,7 @@ from .serializers import LoginSerializer
 class LoginView(APIView):
     permission_classes = [permissions.AllowAny]
 
-    @ratelimit(key='ip', rate='5/m', block=True)  # ограничение 5 login в минуту
+    @ratelimit(key='ip', rate='5/m', block=True)
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
