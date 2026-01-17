@@ -1,25 +1,30 @@
 from django.urls import path
+from . import views
 
-from .views import (
-    ContactMessageCreateView,
-    ContactMessageListView,
-    ContactMessageReadView,
-)
+app_name = 'contacts'
 
 urlpatterns = [
+    # Публичные эндпоинты
     path(
-        "create/",
-        ContactMessageCreateView.as_view(),
-        name="contact-create",
+        'form-config/',
+        views.ContactFormConfigView.as_view(),
+        name='form-config'
     ),
     path(
-        "list/",
-        ContactMessageListView.as_view(),
-        name="contact-list",
+        'messages/',
+        views.ContactMessageCreateView.as_view(),
+        name='message-create'
+    ),
+
+    # Админские эндпоинты
+    path(
+        'admin/messages/',
+        views.ContactMessageListView.as_view(),
+        name='message-list'
     ),
     path(
-        "<int:pk>/read/",
-        ContactMessageReadView.as_view(),
-        name="contact-read",
+        'admin/messages/<int:pk>/read/',
+        views.ContactMessageReadView.as_view(),
+        name='message-read'
     ),
 ]

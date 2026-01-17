@@ -18,6 +18,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/v1/contacts/", include("contacts.urls")),
     path("api/v1/", include("uploads.urls")),
+    path('api/account/', include('account.urls')),
 ]
 
 # === Swagger / OpenAPI ===

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'users',
     'uploads',
     'drf_yasg',
+    'account',
 ]
 
 
@@ -104,6 +105,7 @@ DATABASES = {
 # ======================
 # AUTH PASSWORDS
 # ======================
+AUTH_USER_MODEL = 'account.User'
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -117,30 +119,19 @@ AUTH_PASSWORD_VALIDATORS = [
 # I18N / L10N
 # ======================
 
-LANGUAGE_CODE = 'ru'
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'ky'
+
+LANGUAGES = (
+    ('ky', 'Kyrgyz'),
+    ('ru', 'Russian'),
+    ('en', 'English'),
+
+)
 
 USE_I18N = True
 USE_TZ = True
 
-LANGUAGES = (
-    ('ru', 'Russian'),
-    ('en', 'English'),
-    ('ky', 'Kyrgyz'),
-)
-
-PARLER_LANGUAGES = {
-    None: (
-        {'code': 'ru'},
-        {'code': 'en'},
-        {'code': 'ky'},
-    ),
-    'default': {
-        'fallback': 'ru',
-        'hide_untranslated': False,
-    }
-}
-
+LOCALE_PATHS = [BASE_DIR / 'locale']
 
 # ======================
 # STATIC / MEDIA
